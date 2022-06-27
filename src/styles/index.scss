@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "UnidreamLED";
+  src: url('./fonts/UnidreamLED.ttf?t=1609815221234') format('truetype');
+}
+
+@font-face {
+  font-family: "DINCondensedBold";
+  src: url('./fonts/DINCondensedBold.ttf?t=1609815221234') format('truetype');
+}
+
+@font-face {
+  font-family: "PingFangMedium";
+  src: url('./fonts/PingFangMedium.otf?t=1609815221234') format('truetype');
+}
+
+@font-face {
+  font-family: "PingFangSemibold";
+  src: url('./fonts/PingFang-SC-Semibold.ttf?t=1609815221234') format('truetype');
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  width: 1920px;
+  height: 1080px;
+  background: rgb(18, 17, 34);
+  font-size: 14px;
+  font-family: PingFangMedium, PingFang;
+}
