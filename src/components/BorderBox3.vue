@@ -55,7 +55,6 @@ export default {
     width: 2px;
     height: var(--side-height);
     background-color: var(--border-color);
-    opacity: .3;
     &::before {
       content: '';
       position: absolute;

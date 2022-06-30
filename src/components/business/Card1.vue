@@ -3,15 +3,29 @@
     <div class="card1">
       <div class="header">
         <border-box4>{{ title }}</border-box4>
-        <div class="items">
-          <div class="item" v-for="(item, idx) in items" :key="idx">
-            <border-box3 :width="item.width" :height="27" :side-height="8" :borderColor="rgba[idx]">
-              <span class="name">{{ item.name }}</span>
-            </border-box3>
-            <border-box3 :width="item.width" :height="37" :borderColor="rgba[idx]" style="margin-top: 4px;">
-              <span class="count">{{ item.count || '--' }}</span>
-            </border-box3>
-          </div>
+        <div class="items" :class="items.length === 1 ? 'single' : ''">
+          <template v-if="items.length > 1">
+            <div class="item" v-for="(item, idx) in items" :key="idx">
+              <border-box3 :width="item.width" :height="27" :side-height="8" :borderColor="rgba[idx]">
+                <span class="name">{{ item.name }}</span>
+              </border-box3>
+              <border-box3 :width="item.width" :height="37" :borderColor="rgba[idx]" style="margin-top: 4px;">
+                <span class="count">{{ item.count || '--' }}</span>
+              </border-box3>
+            </div>
+          </template>
+          <template v-else-if="items.length === 1">
+            <div class="item">
+              <border-box3 :width="items[0].width" :height="37" :borderColor="rgba[0]">
+                <span class="name">{{ items[0].name }}</span>
+              </border-box3>
+            </div>
+            <div class="item" style="margin-left: 12px;">
+              <border-box3 :width="items[0].width" :height="37" :borderColor="rgba[0]">
+                <span class="count">{{ items[0].count || '--' }}</span>
+              </border-box3>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -73,6 +87,9 @@ export default {
       flex: 1;
       display: flex;
       justify-content: space-between;
+      &.single {
+        justify-content: flex-start;
+      }
       .item {
         display: flex;
         flex-direction: column;
