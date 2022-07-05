@@ -24,7 +24,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
-import BorderBox2 from '@/components/BorderBox2'
+import BorderBox2 from '@/components/border-box/BorderBox2'
 
 export default {
   name: 'Rank',

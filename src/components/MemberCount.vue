@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import BorderBox3 from '@/components/BorderBox3'
+import BorderBox3 from '@/components/border-box/BorderBox3'
 
 export default {
   name: 'MemberCount',

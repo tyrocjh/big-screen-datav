@@ -36,9 +36,9 @@
 
 <script>
 import { colorTransform } from '@/utils'
-import BorderBox1 from '@/components/BorderBox1'
-import BorderBox3 from '@/components/BorderBox3'
-import BorderBox4 from '@/components/BorderBox4'
+import BorderBox1 from '@/components/border-box/BorderBox1'
+import BorderBox3 from '@/components/border-box/BorderBox3'
+import BorderBox4 from '@/components/border-box/BorderBox4'
 
 const BORDER_COLORS = ['#fe615a', '#61b8ab', '#fedb58']
 

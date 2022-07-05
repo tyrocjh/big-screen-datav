@@ -8,10 +8,14 @@
     </header>
     <div class="container">
       <section class="container-left">
-        <card1 class="mb20" title="当日会员纳新" :items="curMember">111</card1>
-        <card1 class="mb20" title="移动端会员" :items="mobileMember">222</card1>
+        <card1 class="mb20" title="当日会员纳新" :items="curMember">
+          <line-chart class="chart-container" :options="curMemberOptions" />
+        </card1>
+        <card1 class="mb20" title="移动端会员" :items="mobileMember">
+          <line-chart class="chart-container" :options="mobileMemberOptions" />
+        </card1>
         <card1 title="用户服务" :items="memberService">
-          <div id="main" style="width: 500px; height: 260px;"></div>
+          <line-chart class="chart-container" :options="memberServiceOptions" />
         </card1>
       </section>
 
@@ -46,7 +50,8 @@
 </template>
 
 <script>
-import * as echarts from 'echarts';
+// import * as echarts from 'echarts'
+import LineChart from '@/components/echarts/LineChart'
 import Card1 from '@/components/business/Card1'
 import Rank from '@/components/business/Rank'
 import Clock from '@/components/Clock'
@@ -55,6 +60,7 @@ import MemberCount from '@/components/MemberCount'
 export default {
   name: 'App',
   components: {
+    LineChart,
     Card1,
     Rank,
     MemberCount,
@@ -69,18 +75,23 @@ export default {
         { name: '美团纳新数', count: null, width: 96 },
         { name: '昨日线下会员纳新数', count: null, width: 108 },
       ],
+      curMemberList: [],
+      curMemberOptions: {},
       mobileMember: [
         { name: '移动端新增用户数', count: null, width: 120 },
         { name: '移动端活跃用户数', count: null, width: 120 },
       ],
+      mobileMemberList: [],
+      mobileMemberOptions: {},
       memberService: [
         { name: '话务量', count: null, width: 96 },
         { name: '话务接通率', count: null, width: 96 },
         { name: '工单总量', count: null, width: 108 },
       ],
-      memberServiceTrend: [],
+      memberServiceList: [],
+      memberServiceOptions: {},
       officalOrder: [{ name: '官渠订单量', count: null, width: 120 }],
-      otaOrder: [{ name: 'OTA订单量', count: null, width: 120 }],
+      otaOrder: [{ name: 'OTA订单量', count: null, width: 120 }]
     }
   },
   created() {
@@ -89,7 +100,7 @@ export default {
   methods: {
     initData() {
       setTimeout(() => {
-        this.getCurMemberData()
+        this.getCurMember()
         this.getMobileMember()
         this.getUserService()
         this.getOfficalOrder()
@@ -98,18 +109,90 @@ export default {
         this.getFlowRank()
       }, 200)
     },
-    getCurMemberData() {
+    getCurMember() {
       this.curMember = [
         { name: '会员纳新总数', count: 11, width: 96 },
         { name: '美团纳新数', count: 5, width: 96 },
-        { name: '昨日线下会员纳新数', count: 7635, width: 108 },
+        { name: '昨日线下会员纳新数', count: 7635, width: 108 }
       ]
+      this.curMemberList = [
+        { time: '09:00', memberCount: 12, mtCount: 56 },
+        { time: '10:00', memberCount: 35, mtCount: 35 },
+        { time: '11:00', memberCount: 56, mtCount: 12 }
+      ]
+
+      let xAxisData = [], series1 = [], series2 = []
+      this.curMemberList.map(item => {
+        xAxisData.push(item.time)
+        series1.push(item.memberCount)
+        series2.push(item.mtCount)
+      })
+
+      this.curMemberOptions = {
+        legend: {
+          data: ['会员纳新', '美团纳新']
+        },
+        xAxis: {
+          data: xAxisData
+        },
+        yAxis: [{
+          name: '单位/人'
+        }],
+        series: [
+          {
+            name: '会员纳新',
+            type: 'line',
+            data: series1
+          },
+          {
+            name: '美团纳新',
+            type: 'line',
+            data: series2
+          }
+        ]
+      }
     },
     getMobileMember() {
       this.mobileMember = [
         { name: '移动端新增用户数', count: 185, width: 150 },
         { name: '移动端活跃用户数', count: 96, width: 150 },
       ]
+      this.mobileMemberList = [
+        { time: '09:00', newCount: 12, activeCount: 33 },
+        { time: '10:00', newCount: 55, activeCount: 14 },
+        { time: '11:00', newCount: 30, activeCount: 50 }
+      ]
+
+      let xAxisData = [], series1 = [], series2 = []
+      this.mobileMemberList.map(item => {
+        xAxisData.push(item.time)
+        series1.push(item.newCount)
+        series2.push(item.activeCount)
+      })
+
+      this.mobileMemberOptions = {
+        legend: {
+          data: ['移动端新增用户', '移动端活跃用户']
+        },
+        xAxis: {
+          data: xAxisData
+        },
+        yAxis: [{
+          name: '单位/人'
+        }],
+        series: [
+          {
+            name: '移动端新增用户',
+            type: 'line',
+            data: series1
+          },
+          {
+            name: '移动端活跃用户',
+            type: 'line',
+            data: series2
+          }
+        ]
+      }
     },
     getUserService() {
       this.memberService = [
@@ -117,7 +200,7 @@ export default {
         { name: '话务接通率', count: '94.84%', width: 96 },
         { name: '工单总量', count: 126, width: 108 },
       ]
-      this.memberServiceTrend = [
+      this.memberServiceList = [
         { ymdHour: '2021-11-15 00', erlCnt: 35, callCompletingRate: 1 },
         { ymdHour: '2021-11-15 01', erlCnt: 27, callCompletingRate: 1 },
         { ymdHour: '2021-11-15 02', erlCnt: 19, callCompletingRate: 0.9167 },
@@ -145,92 +228,38 @@ export default {
       ]
 
       let xAxisData = [], series1 = [], series2 = []
-      this.memberServiceTrend.map(item => {
+      this.memberServiceList.map(item => {
         xAxisData.push(item.ymdHour.split(' ')[1] + ':00')
         series1.push(item.erlCnt)
         series2.push((item.callCompletingRate * 100).toFixed(2))
       })
 
-      var myChart = echarts.init(document.getElementById('main'))
-      myChart.setOption({
-        textStyle: {
-          fontSize: 8,
-          color: 'rgba(255, 255, 255, .7)'
+      this.memberServiceOptions = {
+        tooltip: {
+          formatter: params => {
+            let result = params[0].axisValueLabel + '<br />'
+            params.map((param, idx) => {
+              result += param.marker + param.seriesName + '：' + (idx === 1 ? (param.value + '%') : param.value) + '<br />'
+            })
+            return result
+          }
         },
-        color: ['#fe615a', '#fedb58'],
         legend: {
-          icon: 'rect',
-          right: 0,
-          top: '20px',
-          itemWidth: 8,
-          itemHeight: 2,
-          textStyle: {
-            fontSize: 8,
-            color: 'rgba(255, 255, 255, .7)'
-          },
           data: ['话务量', '话务接通率']
         },
         xAxis: {
-          boundaryGap: false,
-          axisTick: {
-            alignWithLabel: true
-          },
-          axisLabel: {
-            fontSize: 8,
-            color: 'rgba(255, 255, 255, .7)'
-          },
-          axisLine: {
-            lineStyle: {
-              color: 'rgba(254, 97, 90, .4)'
-            }
-          },
           data: xAxisData
         },
-        yAxis: [
-          {
-            type: 'value',
-            axisTick: {
-              show: true
-            },
-            axisLabel: {
-              fontSize: 8,
-              color: 'rgba(255, 255, 255, .7)'
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: 'rgba(254, 97, 90, .4)'
-              }
-            },
-            splitLine: {
-              show: false
-            },
-            name: '话务量',
+        yAxis: [{
+          name: '话务量'
+        }, {
+          name: '接通率',
+          axisLabel: {
+            formatter: '{value}%'
           },
-          {
-            type: 'value',
-            axisTick: {
-              show: true
-            },
-            axisLabel: {
-              fontSize: 8,
-              color: 'rgba(255, 255, 255, .7)',
-              formatter: '{value}%'
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: 'rgba(254, 97, 90, .4)'
-              }
-            },
-            splitLine: {
-              show: false
-            },
-            name: '接通率',
-            min: 0,
-            max: 100
-          }
-        ],
+          min: 0,
+          max: 100
+        }],
         series: [
           {
             name: '话务量',
@@ -240,10 +269,11 @@ export default {
           {
             name: '话务接通率',
             type: 'line',
+            yAxisIndex: 1,
             data: series2
           }
         ]
-      })
+      }
     },
     getOfficalOrder() {
       this.officalOrder = [{ name: '官渠订单量', count: 3, width: 120 }]
@@ -388,6 +418,11 @@ export default {
     overflow: hidden;
     display: flex;
     padding: 34px 48px 30px;
+    .chart-container {
+      margin-top: 20px;
+      width: 100%;
+      height: 178px;
+    }
     .container-left,
     .container-right {
       width: 500px;
