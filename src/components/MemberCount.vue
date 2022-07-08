@@ -3,17 +3,17 @@
     <div class="member-count">
       <h3>会员总数</h3>
       <div class="count-box">
-        <div class="count-item">1</div>
-        <div class="count-item">2</div>
-        <div class="count-item">3</div>
+        <div class="count-item"><number-scroll :value="+numberArr[0]" /></div>
+        <div class="count-item"><number-scroll :value="+numberArr[1]" /></div>
+        <div class="count-item"><number-scroll :value="+numberArr[2]" /></div>
         <div class="comma">,</div>
-        <div class="count-item">4</div>
-        <div class="count-item">5</div>
-        <div class="count-item">6</div>
+        <div class="count-item"><number-scroll :value="+numberArr[3]" /></div>
+        <div class="count-item"><number-scroll :value="+numberArr[4]" /></div>
+        <div class="count-item"><number-scroll :value="+numberArr[5]" /></div>
         <div class="comma">,</div>
-        <div class="count-item">7</div>
-        <div class="count-item">8</div>
-        <div class="count-item">9</div>
+        <div class="count-item"><number-scroll :value="+numberArr[6]" /></div>
+        <div class="count-item"><number-scroll :value="+numberArr[7]" /></div>
+        <div class="count-item"><number-scroll :value="+numberArr[8]" /></div>
       </div>
     </div>
     <div class="other-count">
@@ -27,25 +27,38 @@
         <p>小程序用户数</p>
       </border-box3>
       <border-box3 class="count">
-        <p>123</p>
+        <p>{{ member.appCount }}</p>
       </border-box3>
       <border-box3 class="count">
-        <p>456</p>
+        <p>{{ member.wechatCount }}</p>
       </border-box3>
       <border-box3 class="count">
-        <p>789</p>
+        <p>{{ member.miniCount }}</p>
       </border-box3>
     </div>
   </div>
 </template>
 
 <script>
+import NumberScroll from '@/components/NumberScroll'
 import BorderBox3 from '@/components/border-box/BorderBox3'
 
 export default {
   name: 'MemberCount',
   components: {
-    BorderBox3,
+    NumberScroll,
+    BorderBox3
+  },
+  props: {
+    member: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    numberArr() {
+      return (this.member.total + '').split('')
+    }
   }
 }
 </script>
@@ -56,7 +69,7 @@ export default {
     box-sizing: border-box;
     position: relative;
     margin: 0 auto;
-    padding: 5px 40px 0;
+    padding: 10px 40px 0;
     width: 452px;
     height: 124px;
     background: linear-gradient(90deg, #fe615a, #eb285e);

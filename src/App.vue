@@ -21,7 +21,7 @@
 
       <section class="container-mid">
         <div class="mid-box-top">
-          <member-count />
+          <member-count :member="member" />
         </div>
 
         <div class="mid-box-mid">
@@ -41,21 +41,27 @@
       </section>
 
       <section class="container-right">
-        <card1 class="mb20" title="实时流量">111</card1>
-        <card1 class="mb20" title="官渠实时订单" :items="officalOrder">222</card1>
-        <card1 title="OTA实时订单" :items="otaOrder">333</card1>
+        <card1 class="mb20" title="实时流量">
+          <traffic :list="trafficList" />
+        </card1>
+        <card1 class="mb20" title="官渠实时订单" :items="officalOrder">
+          <line-chart class="chart-container" :options="officalOrderOptions" style="margin-top: 55px;" />
+        </card1>
+        <card1 title="OTA实时订单" :items="otaOrder">
+          <line-chart class="chart-container" :options="otaOrderOptions" style="margin-top: 55px;" />
+        </card1>
       </section>
     </div>
   </div>
 </template>
 
 <script>
-// import * as echarts from 'echarts'
 import LineChart from '@/components/echarts/LineChart'
 import Card1 from '@/components/business/Card1'
 import Rank from '@/components/business/Rank'
 import Clock from '@/components/Clock'
 import MemberCount from '@/components/MemberCount'
+import Traffic from '@/components/Traffic'
 
 export default {
   name: 'App',
@@ -64,10 +70,12 @@ export default {
     Card1,
     Rank,
     MemberCount,
-    Clock
+    Clock,
+    Traffic
   },
   data() {
     return {
+      member: {},
       memberRank: [],
       flowRank: [],
       curMember: [
@@ -90,8 +98,13 @@ export default {
       ],
       memberServiceList: [],
       memberServiceOptions: {},
+      trafficList: [],
       officalOrder: [{ name: '官渠订单量', count: null, width: 120 }],
-      otaOrder: [{ name: 'OTA订单量', count: null, width: 120 }]
+      officalOrderList: [],
+      officalOrderOptions: {},
+      otaOrder: [{ name: 'OTA订单量', count: null, width: 120 }],
+      otaOrderList: [],
+      otaOrderOptions: {}
     }
   },
   created() {
@@ -100,14 +113,24 @@ export default {
   methods: {
     initData() {
       setTimeout(() => {
+        this.getMember()
         this.getCurMember()
         this.getMobileMember()
         this.getUserService()
         this.getOfficalOrder()
+        this.getRrafficList()
         this.getOtaOrder()
         this.getMemberRank()
         this.getFlowRank()
       }, 200)
+    },
+    getMember() {
+      this.member = {
+        total: 123456789,
+        appCount: 987,
+        wechatCount: 654,
+        miniCount: 321
+      }
     },
     getCurMember() {
       this.curMember = [
@@ -139,16 +162,8 @@ export default {
           name: '单位/人'
         }],
         series: [
-          {
-            name: '会员纳新',
-            type: 'line',
-            data: series1
-          },
-          {
-            name: '美团纳新',
-            type: 'line',
-            data: series2
-          }
+          { name: '会员纳新', type: 'line', data: series1 },
+          { name: '美团纳新', type: 'line', data: series2 }
         ]
       }
     },
@@ -181,16 +196,8 @@ export default {
           name: '单位/人'
         }],
         series: [
-          {
-            name: '移动端新增用户',
-            type: 'line',
-            data: series1
-          },
-          {
-            name: '移动端活跃用户',
-            type: 'line',
-            data: series2
-          }
+          { name: '移动端新增用户', type: 'line', data: series1 },
+          { name: '移动端活跃用户', type: 'line', data: series2 }
         ]
       }
     },
@@ -254,32 +261,92 @@ export default {
           name: '话务量'
         }, {
           name: '接通率',
-          axisLabel: {
-            formatter: '{value}%'
-          },
+          axisLabel: { formatter: '{value}%' },
           min: 0,
           max: 100
         }],
         series: [
-          {
-            name: '话务量',
-            type: 'line',
-            data: series1
-          },
-          {
-            name: '话务接通率',
-            type: 'line',
-            yAxisIndex: 1,
-            data: series2
-          }
+          { name: '话务量', type: 'line', data: series1 },
+          { name: '话务接通率', type: 'line', yAxisIndex: 1, data: series2 }
         ]
       }
     },
     getOfficalOrder() {
       this.officalOrder = [{ name: '官渠订单量', count: 3, width: 120 }]
+      this.officalOrderList = [
+        { time: '09:00', count1: 100, count2: 100, count3: 100, count4: 100 },
+        { time: '10:00', count1: 100, count2: 75, count3: 50, count4: 0 },
+        { time: '11:00', count1: 0, count2: 50, count3: 75, count4: 100 },
+        { time: '12:00', count1: 0, count2: 0, count3: 0, count4: 0 }
+      ]
+
+      let xAxisData = [], series1 = [], series2 = [], series3 = [], series4 = []
+      this.officalOrderList.map(item => {
+        xAxisData.push(item.time)
+        series1.push(item.count1)
+        series2.push(item.count2)
+        series3.push(item.count3)
+        series4.push(item.count4)
+      })
+
+      this.officalOrderOptions = {
+        legend: {
+          data: ['官渠订单量', 'APP订单量', '微信订单量', '小程序订单量']
+        },
+        xAxis: {
+          data: xAxisData
+        },
+        series: [
+          { name: '官渠订单量', type: 'line', data: series1 },
+          { name: 'APP订单量', type: 'line', data: series2 },
+          { name: '微信订单量', type: 'line', data: series3 },
+          { name: '小程序订单量', type: 'line', data: series4 }
+        ]
+      }
+    },
+    getRrafficList() {
+      this.trafficList = [
+        { title: '在营门店数', count: 356 },
+        { title: '在售间夜', count: 1685 },
+        { title: '已售间夜', count: 999 },
+        { title: '当前上线官网数', count: 523 },
+        { title: '在售间夜', count: 8512 },
+        { title: '已售间夜', count: 5547 }
+      ]
     },
     getOtaOrder() {
       this.otaOrder = [{ name: 'OTA订单量', count: 5, width: 120 }]
+
+      this.otaOrderList = [
+        { time: '09:00', count1: 88, count2: 66, count3: 44, count4: 22 },
+        { time: '10:00', count1: 66, count2: 44, count3: 22, count4: 0 },
+        { time: '11:00', count1: 0, count2: 22, count3: 44, count4: 66 },
+        { time: '12:00', count1: 22, count2: 44, count3: 66, count4: 88 }
+      ]
+
+      let xAxisData = [], series1 = [], series2 = [], series3 = [], series4 = []
+      this.otaOrderList.map(item => {
+        xAxisData.push(item.time)
+        series1.push(item.count1)
+        series2.push(item.count2)
+        series3.push(item.count3)
+        series4.push(item.count4)
+      })
+
+      this.otaOrderOptions = {
+        legend: {
+          data: ['OTA订单量', '携程订单量', '美团订单量', '其他订单量']
+        },
+        xAxis: {
+          data: xAxisData
+        },
+        series: [
+          { name: 'OTA订单量', type: 'line', data: series1 },
+          { name: '携程订单量', type: 'line', data: series2 },
+          { name: '美团订单量', type: 'line', data: series3 },
+          { name: '其他订单量', type: 'line', data: series4 }
+        ]
+      }
     },
     getMemberRank() {
       let res = {
@@ -444,6 +511,7 @@ export default {
       }
       .mid-box-mid {
         position: relative;
+        margin-top: 20px;
         height: 458px;
       }
       .mid-box-bottom {

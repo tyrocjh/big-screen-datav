@@ -9,7 +9,7 @@ export default {
     fontSize: 8,
     color: 'rgba(255, 255, 255, .7)'
   },
-  color: ['#fe615a', '#fedb58'],
+  color: ['#fe615a', '#fedb58', '#6bd5c8', '#3cabf4'],
   tooltip: {
     trigger: 'axis',
     axisPointer: {
