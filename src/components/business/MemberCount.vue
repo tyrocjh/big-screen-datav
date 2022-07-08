@@ -89,7 +89,7 @@ export default {
         height: 56px;
         line-height: 56px;
         font-size: 46px;
-        background: url('../assets/images/num-bg.svg');
+        background: url('../../assets/images/num-bg.svg');
       }
       .comma {
         display: flex;

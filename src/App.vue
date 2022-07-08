@@ -8,15 +8,15 @@
     </header>
     <div class="container">
       <section class="container-left">
-        <card1 class="mb20" title="当日会员纳新" :items="curMember">
+        <card class="mb20" title="当日会员纳新" :items="curMember">
           <line-chart class="chart-container" :options="curMemberOptions" />
-        </card1>
-        <card1 class="mb20" title="移动端会员" :items="mobileMember">
+        </card>
+        <card class="mb20" title="移动端会员" :items="mobileMember">
           <line-chart class="chart-container" :options="mobileMemberOptions" />
-        </card1>
-        <card1 title="用户服务" :items="memberService">
+        </card>
+        <card title="用户服务" :items="memberService">
           <line-chart class="chart-container" :options="memberServiceOptions" />
-        </card1>
+        </card>
       </section>
 
       <section class="container-mid">
@@ -41,37 +41,37 @@
       </section>
 
       <section class="container-right">
-        <card1 class="mb20" title="实时流量">
+        <card class="mb20" title="实时流量">
           <traffic :list="trafficList" />
-        </card1>
-        <card1 class="mb20" title="官渠实时订单" :items="officalOrder">
+        </card>
+        <card class="mb20" title="官渠实时订单" :items="officalOrder">
           <line-chart class="chart-container" :options="officalOrderOptions" style="margin-top: 55px;" />
-        </card1>
-        <card1 title="OTA实时订单" :items="otaOrder">
+        </card>
+        <card title="OTA实时订单" :items="otaOrder">
           <line-chart class="chart-container" :options="otaOrderOptions" style="margin-top: 55px;" />
-        </card1>
+        </card>
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import LineChart from '@/components/echarts/LineChart'
-import Card1 from '@/components/business/Card1'
-import Rank from '@/components/business/Rank'
 import Clock from '@/components/Clock'
-import MemberCount from '@/components/MemberCount'
-import Traffic from '@/components/Traffic'
+import LineChart from '@/components/echarts/LineChart'
+import Card from '@/components/business/Card'
+import Rank from '@/components/business/Rank'
+import Traffic from '@/components/business/Traffic'
+import MemberCount from '@/components/business/MemberCount'
 
 export default {
   name: 'App',
   components: {
-    LineChart,
-    Card1,
-    Rank,
-    MemberCount,
     Clock,
-    Traffic
+    LineChart,
+    Card,
+    Rank,
+    Traffic,
+    MemberCount
   },
   data() {
     return {

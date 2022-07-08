@@ -1,6 +1,6 @@
 <template>
   <border-box1>
-    <div class="card1">
+    <div class="card">
       <div class="header">
         <border-box4>{{ title }}</border-box4>
         <div class="items" :class="items.length === 1 ? 'single' : ''">
@@ -43,7 +43,7 @@ import BorderBox4 from '@/components/border-box/BorderBox4'
 const BORDER_COLORS = ['#fe615a', '#61b8ab', '#fedb58']
 
 export default {
-  name: 'Card1',
+  name: 'Card',
   components: {
     BorderBox1,
     BorderBox3,
@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card1 {
+.card {
   position: relative;
   width: 100%;
   height: 100%;
