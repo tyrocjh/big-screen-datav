@@ -145,35 +145,119 @@ export default {
     },
     getCurFlow() {
       this.mapOptions = {
-        tooltip: {
-          formatter: param => {
-            let value = '--'
-            if (param.value) {
-              value = (param.value * 100).toFixed(2) + '%'
-            }
-            return param.name + '<br />实时流量 ' + value
+        geo: {
+          map: 'china',
+          silent: true,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          label: {
+            fontSize: 0
+          },
+          itemStyle: {
+            areaColor: 'rgba(0, 0, 0, .3)',
+            borderWidth: 0
           }
         },
-        visualMap: {
-          pieces: [
-            { min: 0, max: 0.2, label: '0% ~ 20%' },
-            { min: 0.2, max: 0.4, label: '20% ~ 40%' },
-            { min: 0.4, max: 0.6, label: '40% ~ 60%' },
-            { min: 0.6, max: 0.8, label: '60% ~ 80%' },
-            { min: 0.8, max: 1, label: '80% ~ 100%' }
-          ]
-        },
-        series: [{
-          data: [
-            { name: '安徽省', value: 0.8918918918918919 },
-            { name: '湖北省', value: 0.5555555555555556 },
-            { name: '贵州省', value: 0.4523809523809524 },
-            { name: '广西壮族自治区', value: 0.6086956521739131 },
-            { name: '广东省', value: 0.7241379310344828 },
-            { name: '吉林省', value: 0.717948717948718 },
-            { name: '北京市', value: 0.7653061224489796 },
-          ]
-        }]
+        series: [
+          {
+            type: 'map',
+            map: 'china',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            label: {
+              fontSize: 0
+            },
+            itemStyle: {
+              areaColor: 'rgba(254, 97, 90, .1)',
+              borderColor: '#fe615a'
+            }
+          },
+          {
+            type: 'lines',
+            zlevel: 1,
+            effect: {
+              show: true,
+              color: 'red',
+              period: 5,
+              symbolSize: 4,
+              trailLength: 0.7
+            },
+            lineStyle: {
+              width: 0,
+              curveness: 0.2
+            },
+            data: [
+              { coords: [[113.5107, 23.2196], [121.4648, 31.2891]] },
+              { coords: [[113.5107, 23.2196], [116.4551, 40.2539]] },
+              { coords: [[113.5107, 23.2196], [91.1865, 30.1465]] },
+              { coords: [[113.5107, 23.2196], [107.7539, 30.1904]] },
+              { coords: [[116.4551, 40.2539], [113.5107, 23.2196]] },
+              { coords: [[116.4551, 40.2539], [121.4648, 31.2891]] },
+              { coords: [[116.4551, 40.2539], [91.1865, 30.1465]] },
+              { coords: [[116.4551, 40.2539], [107.7539, 30.1904]] }
+            ]
+          },
+          {
+            type: 'lines',
+            zlevel: 2,
+            symbol: ['none', 'arrow'],
+            symbolSize: 10,
+            effect: {
+              show: true,
+              color: 'red',
+              period: 5,
+              trailLength: 0,
+              symbol: 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z',
+              symbolSize: 15
+            },
+            lineStyle: {
+              color: 'red',
+              width: 1,
+              opacity: 0.6,
+              curveness: 0.2
+            },
+            data: [
+              { coords: [[113.5107, 23.2196], [121.4648, 31.2891]] },
+              { coords: [[113.5107, 23.2196], [116.4551, 40.2539]] },
+              { coords: [[113.5107, 23.2196], [91.1865, 30.1465]] },
+              { coords: [[113.5107, 23.2196], [107.7539, 30.1904]] },
+              { coords: [[116.4551, 40.2539], [113.5107, 23.2196]] },
+              { coords: [[116.4551, 40.2539], [121.4648, 31.2891]] },
+              { coords: [[116.4551, 40.2539], [91.1865, 30.1465]] },
+              { coords: [[116.4551, 40.2539], [107.7539, 30.1904]] }
+            ]
+          },
+          {
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            zlevel: 2,
+            rippleEffect: {
+              brushType: 'stroke'
+            },
+            label: {
+              show: true,
+              position: 'bottom',
+              formatter: '{b}',
+              fontSize: 10,
+              color:'#fff'
+            },
+            symbolSize: 8,
+            itemStyle: {
+              color: 'yellow'
+            },
+            data: [
+              { name: '广州', value: [113.5107, 23.2196] },
+              { name: '上海', value: [121.4648, 31.2891] },
+              { name: '北京', value: [116.4551, 40.2539] },
+              { name: '拉萨', value: [91.1865, 30.1465] },
+              { name: '重庆', value: [107.7539, 30.1904] }
+            ]
+          }
+        ]
       }
     },
     getCurMember() {
