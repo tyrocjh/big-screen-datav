@@ -1,62 +1,67 @@
 <template>
   <div id="app">
-    <header>
-      <h1>数据大屏</h1>
-      <div class="clock-container">
-        <clock />
+    <full-screen-container>
+      <div class="big-screen">
+        <header>
+          <h1>数据大屏</h1>
+          <div class="clock-container">
+            <clock />
+          </div>
+        </header>
+        <div class="container">
+          <section class="container-left">
+            <card class="mb20" title="当日会员纳新" :items="curMember">
+              <line-chart class="chart-container" :options="curMemberOptions" />
+            </card>
+            <card class="mb20" title="移动端会员" :items="mobileMember">
+              <line-chart class="chart-container" :options="mobileMemberOptions" />
+            </card>
+            <card title="用户服务" :items="memberService">
+              <line-chart class="chart-container" :options="memberServiceOptions" />
+            </card>
+          </section>
+
+          <section class="container-mid">
+            <div class="mid-box-top">
+              <member-count :member="member" />
+            </div>
+
+            <div class="mid-box-mid">
+              <h3>实时流量</h3>
+              <map-chart class="map-chart-container" :options="mapOptions" />
+            </div>
+
+            <div class="mid-box-bottom">
+              <div class="box">
+                <h3>会员拉新榜</h3>
+                <rank :data="memberRank" />
+              </div>
+              <div class="box">
+                <h3>实时流量榜</h3>
+                <rank :data="flowRank" />
+              </div>
+            </div>
+          </section>
+
+          <section class="container-right">
+            <card class="mb20" title="实时流量">
+              <traffic :list="trafficList" />
+            </card>
+            <card class="mb20" title="官渠实时订单" :items="officalOrder">
+              <line-chart class="chart-container" :options="officalOrderOptions" style="margin-top: 55px;" />
+            </card>
+            <card title="OTA实时订单" :items="otaOrder">
+              <line-chart class="chart-container" :options="otaOrderOptions" style="margin-top: 55px;" />
+            </card>
+          </section>
+        </div>
       </div>
-    </header>
-    <div class="container">
-      <section class="container-left">
-        <card class="mb20" title="当日会员纳新" :items="curMember">
-          <line-chart class="chart-container" :options="curMemberOptions" />
-        </card>
-        <card class="mb20" title="移动端会员" :items="mobileMember">
-          <line-chart class="chart-container" :options="mobileMemberOptions" />
-        </card>
-        <card title="用户服务" :items="memberService">
-          <line-chart class="chart-container" :options="memberServiceOptions" />
-        </card>
-      </section>
-
-      <section class="container-mid">
-        <div class="mid-box-top">
-          <member-count :member="member" />
-        </div>
-
-        <div class="mid-box-mid">
-          <h3>实时流量</h3>
-          <map-chart class="map-chart-container" :options="mapOptions" />
-        </div>
-
-        <div class="mid-box-bottom">
-          <div class="box">
-            <h3>会员拉新榜</h3>
-            <rank :data="memberRank" />
-          </div>
-          <div class="box">
-            <h3>实时流量榜</h3>
-            <rank :data="flowRank" />
-          </div>
-        </div>
-      </section>
-
-      <section class="container-right">
-        <card class="mb20" title="实时流量">
-          <traffic :list="trafficList" />
-        </card>
-        <card class="mb20" title="官渠实时订单" :items="officalOrder">
-          <line-chart class="chart-container" :options="officalOrderOptions" style="margin-top: 55px;" />
-        </card>
-        <card title="OTA实时订单" :items="otaOrder">
-          <line-chart class="chart-container" :options="otaOrderOptions" style="margin-top: 55px;" />
-        </card>
-      </section>
-    </div>
+    </full-screen-container>
   </div>
 </template>
 
 <script>
+import FullScreenContainer from '@/components/FullScreenContainer'
 import Clock from '@/components/Clock'
 import MapChart from '@/components/echarts/MapChart'
 import LineChart from '@/components/echarts/LineChart'
@@ -68,6 +73,7 @@ import MemberCount from '@/components/business/MemberCount'
 export default {
   name: 'App',
   components: {
+    FullScreenContainer,
     Clock,
     MapChart,
     LineChart,
@@ -497,7 +503,7 @@ export default {
   margin-bottom: 20px;
 }
 
-#app {
+.big-screen {
   display: flex;
   flex-direction: column;
   width: 100%;

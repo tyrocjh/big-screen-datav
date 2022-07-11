@@ -1,3 +1,28 @@
+export function debounce(delay, callback) {
+  let lastTime
+
+  return function () {
+    clearTimeout(lastTime)
+
+    const [that, args] = [this, arguments]
+
+    lastTime = setTimeout(() => {
+      callback.apply(that, args)
+    }, delay)
+  }
+}
+
+export function observerDomResize(dom, callback) {
+  const MutationObserver =
+    window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
+
+  const observer = new MutationObserver(callback)
+
+  observer.observe(dom, { attributes: true, attributeFilter: ['style'], attributeOldValue: true })
+
+  return observer
+}
+
 export function colorTransform(sHex, alpha = 1) {
   let reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
   /* 16进制颜色转为RGB格式 */
