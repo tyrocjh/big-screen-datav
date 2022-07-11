@@ -26,6 +26,7 @@
 
         <div class="mid-box-mid">
           <h3>实时流量</h3>
+          <map-chart class="map-chart-container" :options="mapOptions" />
         </div>
 
         <div class="mid-box-bottom">
@@ -57,6 +58,7 @@
 
 <script>
 import Clock from '@/components/Clock'
+import MapChart from '@/components/echarts/MapChart'
 import LineChart from '@/components/echarts/LineChart'
 import Card from '@/components/business/Card'
 import Rank from '@/components/business/Rank'
@@ -67,6 +69,7 @@ export default {
   name: 'App',
   components: {
     Clock,
+    MapChart,
     LineChart,
     Card,
     Rank,
@@ -76,6 +79,7 @@ export default {
   data() {
     return {
       member: {},
+      mapOptions: {},
       memberRank: [],
       flowRank: [],
       curMember: [
@@ -114,6 +118,7 @@ export default {
     initData() {
       setTimeout(() => {
         this.getMember()
+        this.getCurFlow()
         this.getCurMember()
         this.getMobileMember()
         this.getUserService()
@@ -130,6 +135,39 @@ export default {
         appCount: 987,
         wechatCount: 654,
         miniCount: 321
+      }
+    },
+    getCurFlow() {
+      this.mapOptions = {
+        tooltip: {
+          formatter: param => {
+            let value = '--'
+            if (param.value) {
+              value = (param.value * 100).toFixed(2) + '%'
+            }
+            return param.name + '<br />实时流量 ' + value
+          }
+        },
+        visualMap: {
+          pieces: [
+            { min: 0, max: 0.2, label: '0% ~ 20%' },
+            { min: 0.2, max: 0.4, label: '20% ~ 40%' },
+            { min: 0.4, max: 0.6, label: '40% ~ 60%' },
+            { min: 0.6, max: 0.8, label: '60% ~ 80%' },
+            { min: 0.8, max: 1, label: '80% ~ 100%' }
+          ]
+        },
+        series: [{
+          data: [
+            { name: '安徽省', value: 0.8918918918918919 },
+            { name: '湖北省', value: 0.5555555555555556 },
+            { name: '贵州省', value: 0.4523809523809524 },
+            { name: '广西壮族自治区', value: 0.6086956521739131 },
+            { name: '广东省', value: 0.7241379310344828 },
+            { name: '吉林省', value: 0.717948717948718 },
+            { name: '北京市', value: 0.7653061224489796 },
+          ]
+        }]
       }
     },
     getCurMember() {
@@ -485,6 +523,11 @@ export default {
     overflow: hidden;
     display: flex;
     padding: 34px 48px 30px;
+    .map-chart-container {
+      margin: 0 auto;
+      width: 600px;
+      height: 430px;
+    }
     .chart-container {
       margin-top: 20px;
       width: 100%;
@@ -511,8 +554,11 @@ export default {
       }
       .mid-box-mid {
         position: relative;
-        margin-top: 20px;
-        height: 458px;
+        margin: 20px 0;
+        height: 430px;
+        h3 {
+          position: absolute;
+        }
       }
       .mid-box-bottom {
         display: flex;
